@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { chapterQueryOptions } from "~/hooks/useChapters";
 import { versesByChapterQueryOptions } from "~/hooks/useVerses";
 import { verseAudioQueryOptions } from "~/hooks/useAudio";
@@ -97,6 +97,47 @@ function SurahView() {
 
   useAutoScrollToVerse();
 
+  // Fullscreen support for Mushaf mode
+  const mushafContainerRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showFsButton, setShowFsButton] = useState(true);
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout>>();
+
+  useEffect(() => {
+    const onChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+
+  // Auto-hide fullscreen button after 3s of inactivity
+  useEffect(() => {
+    if (viewMode !== "mushaf") return;
+    const resetTimer = () => {
+      setShowFsButton(true);
+      clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = setTimeout(() => setShowFsButton(false), 3000);
+    };
+    resetTimer();
+    window.addEventListener("pointermove", resetTimer);
+    window.addEventListener("pointerdown", resetTimer);
+    return () => {
+      clearTimeout(hideTimerRef.current);
+      window.removeEventListener("pointermove", resetTimer);
+      window.removeEventListener("pointerdown", resetTimer);
+    };
+  }, [viewMode]);
+
+  const toggleFullscreen = useCallback(() => {
+    if (!mushafContainerRef.current) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      mushafContainerRef.current.requestFullscreen();
+    }
+  }, []);
+
   const isPlayingThisSurah =
     audioChapterId === chapterId &&
     (playbackState === "playing" || playbackState === "loading");
@@ -145,7 +186,7 @@ function SurahView() {
   const hasNext = chapterId < TOTAL_CHAPTERS;
 
   return (
-    <div className="mx-auto max-w-[680px] px-5 py-8 sm:px-6 sm:py-10">
+    <div ref={mushafContainerRef} className="mx-auto max-w-[680px] px-5 py-8 sm:px-6 sm:py-10 bg-[var(--theme-bg)]">
       <SurahHeader
         chapter={chapter}
         onPlay={handlePlaySurah}
@@ -203,6 +244,38 @@ function SurahView() {
           <span />
         )}
       </div>
+
+      {/* Fullscreen toggle — Mushaf mode only */}
+      {viewMode === "mushaf" && (
+        <button
+          type="button"
+          onClick={toggleFullscreen}
+          aria-label={isFullscreen ? "Tam ekrandan çık" : "Tam ekran"}
+          className="fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full backdrop-blur-xl transition-opacity duration-300"
+          style={{
+            background: "var(--theme-hover-bg)",
+            color: "var(--theme-text-tertiary)",
+            opacity: showFsButton ? 0.85 : 0,
+            pointerEvents: showFsButton ? "auto" : "none",
+          }}
+        >
+          {isFullscreen ? (
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6 2 6 6 2 6" />
+              <polyline points="14 2 14 6 18 6" />
+              <polyline points="6 18 6 14 2 14" />
+              <polyline points="14 18 14 14 18 14" />
+            </svg>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="2 6 2 2 6 2" />
+              <polyline points="18 6 18 2 14 2" />
+              <polyline points="2 14 2 18 6 18" />
+              <polyline points="18 14 18 18 14 18" />
+            </svg>
+          )}
+        </button>
+      )}
     </div>
   );
 }
