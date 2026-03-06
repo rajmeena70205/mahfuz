@@ -78,10 +78,10 @@ export function AyahText({
                 onPlayFromVerse(verse.verse_key);
               }
             }}
-            className={`flex h-6 w-6 items-center justify-center rounded-full transition-all ${
+            className={`flex h-8 w-8 items-center justify-center rounded-full transition-all sm:h-6 sm:w-6 ${
               isPlayingThisVerse
-                ? "bg-primary-600 text-white"
-                : "text-[var(--theme-text-quaternary)] hover:bg-[var(--theme-hover-bg)] hover:text-[var(--theme-text-secondary)]"
+                ? "bg-primary-600 text-white shadow-sm"
+                : "bg-[var(--theme-hover-bg)] text-[var(--theme-text-tertiary)] hover:bg-[var(--theme-hover-bg)] hover:text-[var(--theme-text-secondary)]"
             }`}
             aria-label={
               isPlayingThisVerse
@@ -89,7 +89,7 @@ export function AyahText({
                 : `Ayet ${verse.verse_key}'den dinle`
             }
           >
-            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor">
+            <svg className="h-3.5 w-3.5 sm:h-3 sm:w-3" viewBox="0 0 24 24" fill="currentColor">
               {isPlayingThisVerse && playbackState === "playing" ? (
                 <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
               ) : (

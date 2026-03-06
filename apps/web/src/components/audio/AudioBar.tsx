@@ -239,7 +239,7 @@ export function AudioBar() {
       )}
 
       {/* Collapsed bar */}
-      <div className="audio-bar-in fixed bottom-[calc(48px+env(safe-area-inset-bottom))] left-0 right-0 z-20 bg-[var(--theme-bg-primary)] shadow-sm lg:static lg:z-10 lg:shadow-none">
+      <div className="audio-bar-in fixed bottom-[env(safe-area-inset-bottom)] left-0 right-0 z-20 bg-[var(--theme-bg-primary)] shadow-sm lg:static lg:z-10 lg:shadow-none">
         {/* Thin progress line */}
         <ProgressLine
           currentTime={currentTime}

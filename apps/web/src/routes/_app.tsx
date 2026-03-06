@@ -334,12 +334,12 @@ function AppLayout() {
       )}
 
       {/* Page content */}
-      <main ref={mainRef} className={`relative flex-1 overflow-y-auto ${audioVisible ? "pb-24 lg:pb-0" : ""}`}>
+      <main ref={mainRef} className={`relative flex-1 overflow-y-auto ${audioVisible ? "pb-16 lg:pb-0" : ""}`}>
         <Outlet />
         {showScrollTop && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-20 right-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--theme-bg-primary)] shadow-[var(--shadow-elevated)] transition-all hover:shadow-[var(--shadow-modal)] active:scale-95 lg:bottom-6 lg:right-6"
+            className="fixed bottom-18 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--theme-bg-primary)] shadow-[var(--shadow-elevated)] transition-all hover:shadow-[var(--shadow-modal)] active:scale-95 lg:bottom-6 lg:right-6"
             aria-label="Yukarı dön"
           >
             <svg className="h-5 w-5 text-[var(--theme-text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

@@ -12,6 +12,10 @@ interface SegmentedControlProps<T extends string> {
   onChange: (value: T) => void;
   /** When true, buttons stretch to fill equal widths */
   stretch?: boolean;
+  /** When true, labels are hidden on mobile (icon-only) */
+  iconOnlyMobile?: boolean;
+  /** When true, no background/padding — parent provides the container */
+  transparent?: boolean;
 }
 
 export function SegmentedControl<T extends string>({
@@ -19,6 +23,8 @@ export function SegmentedControl<T extends string>({
   value,
   onChange,
   stretch,
+  iconOnlyMobile,
+  transparent,
 }: SegmentedControlProps<T>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [indicator, setIndicator] = useState({ left: 0, width: 0 });
@@ -38,10 +44,10 @@ export function SegmentedControl<T extends string>({
   return (
     <div
       ref={containerRef}
-      className="relative flex rounded-xl bg-[var(--theme-pill-bg)] p-1"
+      className={`relative flex ${transparent ? "" : "rounded-xl bg-[var(--theme-pill-bg)] p-1"}`}
     >
       <div
-        className="absolute top-1 bottom-1 rounded-lg bg-[var(--theme-bg-primary)] shadow-sm transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
+        className={`absolute rounded-lg bg-[var(--theme-bg-primary)] shadow-sm transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${transparent ? "top-0 bottom-0" : "top-1 bottom-1"}`}
         style={{ left: indicator.left, width: indicator.width }}
       />
       {options.map((opt) => {
@@ -51,16 +57,18 @@ export function SegmentedControl<T extends string>({
             key={opt.value}
             data-segment
             onClick={() => onChange(opt.value)}
-            className={`relative z-[1] flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-1.5 text-[12px] font-medium transition-colors duration-200 ${
-              stretch ? "flex-1" : ""
-            } ${
+            className={`relative z-[1] flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-[12px] font-medium transition-colors duration-200 ${
+              iconOnlyMobile && opt.icon ? "px-2.5 sm:px-3.5" : "px-3.5"
+            } ${stretch ? "flex-1" : ""} ${
               active
                 ? "text-[var(--theme-text)]"
                 : "text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-secondary)]"
             }`}
           >
             {opt.icon}
-            {opt.label}
+            <span className={iconOnlyMobile && opt.icon ? "hidden sm:inline" : ""}>
+              {opt.label}
+            </span>
           </button>
         );
       })}

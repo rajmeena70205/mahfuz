@@ -38,7 +38,7 @@ function SizeSlider({
         </span>
       </div>
       <div className="flex items-center gap-3">
-        {smallIcon}
+        <span className="flex w-5 shrink-0 items-center justify-center">{smallIcon}</span>
         <input
           type="range"
           min="0.6"
@@ -48,7 +48,7 @@ function SizeSlider({
           onChange={(e) => onChange(Number(e.target.value))}
           className="h-1 flex-1 cursor-pointer appearance-none rounded-full bg-[var(--theme-border)] accent-primary-600"
         />
-        {largeIcon}
+        <span className="flex w-5 shrink-0 items-center justify-center">{largeIcon}</span>
       </div>
     </div>
   );
@@ -91,7 +91,7 @@ function Divider() {
   return <div className="my-3 border-t border-[var(--theme-divider)]" />;
 }
 
-export function ReadingToolbar() {
+export function ReadingToolbar({ segmentStyle }: { segmentStyle?: boolean } = {}) {
   const [open, setOpen] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -180,10 +180,18 @@ export function ReadingToolbar() {
       <button
         ref={buttonRef}
         onClick={() => setOpen((v) => !v)}
-        className={`flex h-8 items-center gap-1 rounded-full px-3 text-[13px] font-medium transition-colors ${
-          open
-            ? "bg-primary-600 text-white"
-            : "bg-[var(--theme-pill-bg)] text-[var(--theme-text)] hover:bg-[var(--theme-hover-bg)]"
+        className={`flex items-center gap-1 font-medium transition-colors ${
+          segmentStyle
+            ? `relative z-[1] justify-center rounded-lg px-2.5 py-1.5 text-[12px] sm:px-3.5 ${
+                open
+                  ? "text-[var(--theme-text)]"
+                  : "text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-secondary)]"
+              }`
+            : `h-8 rounded-full px-3 text-[13px] ${
+                open
+                  ? "bg-primary-600 text-white"
+                  : "bg-[var(--theme-pill-bg)] text-[var(--theme-text)] hover:bg-[var(--theme-hover-bg)]"
+              }`
         }`}
         aria-label="Okuma ayarları"
         aria-expanded={open}
@@ -193,19 +201,37 @@ export function ReadingToolbar() {
       </button>
 
       {open && (
-        <div
-          ref={popoverRef}
-          className="animate-toolbar-in absolute right-0 top-full z-50 mt-2 w-72 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-bg-elevated)] p-4 shadow-[var(--shadow-float)]"
-          style={{ backdropFilter: "saturate(180%) blur(20px)" }}
-        >
-          {/* Mode badge */}
-          <div className="mb-3 flex items-center gap-1.5">
-            <span className="rounded-md bg-primary-600/10 px-2 py-0.5 text-[11px] font-semibold text-primary-700">
-              {VIEW_MODE_LABELS[viewMode]}
-            </span>
-            <span className="text-[11px] text-[var(--theme-text-quaternary)]">
-              moduna ait ayarlar
-            </span>
+        <>
+          {/* Backdrop — mobile only */}
+          <div
+            className="fixed inset-0 z-40 bg-black/30 sm:hidden"
+            onClick={() => setOpen(false)}
+          />
+          <div
+            ref={popoverRef}
+            className="fixed inset-x-0 top-1/2 z-50 max-h-[80vh] -translate-y-1/2 overflow-y-auto overscroll-contain border-y border-[var(--theme-border)] bg-[var(--theme-bg-elevated)] p-5 shadow-[var(--shadow-float)] sm:absolute sm:inset-auto sm:right-0 sm:top-full sm:mt-2 sm:w-72 sm:max-h-[70vh] sm:translate-y-0 sm:rounded-2xl sm:border sm:p-4 sm:animate-toolbar-in"
+            style={{ backdropFilter: "saturate(180%) blur(20px)" }}
+          >
+          {/* Header: mode badge + close button */}
+          <div className="mb-3 flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <span className="rounded-md bg-primary-600/10 px-2 py-0.5 text-[11px] font-semibold text-primary-700">
+                {VIEW_MODE_LABELS[viewMode]}
+              </span>
+              <span className="text-[11px] text-[var(--theme-text-quaternary)]">
+                moduna ait ayarlar
+              </span>
+            </div>
+            <button
+              onClick={() => setOpen(false)}
+              className="flex h-7 items-center gap-1 rounded-full bg-primary-600 px-2.5 text-[12px] font-medium text-white transition-colors hover:bg-primary-700 sm:hidden"
+              aria-label="Kapat"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Tamam
+            </button>
           </div>
 
           {/* ─── Common: Arabic font size ─── */}
@@ -213,8 +239,8 @@ export function ReadingToolbar() {
             label="Arapça Boyutu"
             value={arabicFontSize}
             onChange={setArabicFontSize}
-            smallIcon={<span className="arabic-text text-sm text-[var(--theme-text-tertiary)]">ع</span>}
-            largeIcon={<span className="arabic-text text-xl text-[var(--theme-text-tertiary)]">ع</span>}
+            smallIcon={<span className="-translate-y-[4px] text-[15px] leading-none text-[var(--theme-text-tertiary)]" style={{ fontFamily: 'var(--font-arabic)' }}>ع</span>}
+            largeIcon={<span className="-translate-y-[5px] text-[24px] leading-none text-[var(--theme-text-tertiary)]" style={{ fontFamily: 'var(--font-arabic)' }}>ع</span>}
           />
 
           {/* ─── Normal mode: Translation controls ─── */}
@@ -224,8 +250,8 @@ export function ReadingToolbar() {
                 label="Çeviri Boyutu"
                 value={translationFontSize}
                 onChange={setNormalTranslationFontSize}
-                smallIcon={<span className="text-xs text-[var(--theme-text-tertiary)]">A</span>}
-                largeIcon={<span className="text-lg text-[var(--theme-text-tertiary)]">A</span>}
+                smallIcon={<span className="text-[13px] text-[var(--theme-text-tertiary)]">A</span>}
+                largeIcon={<span className="text-[24px] leading-none text-[var(--theme-text-tertiary)]">A</span>}
               />
               <ToggleRow
                 label="Çeviri Göster"
@@ -255,8 +281,8 @@ export function ReadingToolbar() {
                       label={item.sizeLabel}
                       value={item.size}
                       onChange={item.onSizeChange}
-                      smallIcon={<span className="text-xs text-[var(--theme-text-tertiary)]">A</span>}
-                      largeIcon={<span className="text-lg text-[var(--theme-text-tertiary)]">A</span>}
+                      smallIcon={<span className="text-[13px] text-[var(--theme-text-tertiary)]">A</span>}
+                      largeIcon={<span className="text-[24px] leading-none text-[var(--theme-text-tertiary)]">A</span>}
                     />
                   )}
                 </div>
@@ -358,6 +384,7 @@ export function ReadingToolbar() {
             </div>
           </div>
         </div>
+        </>
       )}
     </div>
   );
