@@ -37,7 +37,7 @@ export const ARABIC_FONTS: ArabicFont[] = [
     family: '"KFGQPC Uthmani Hafs"',
     source: "local",
     group: "classic",
-    desc: "Medine mushafında kullanılan resmi Osmanlı hattı. Tecvid işaretleri dahil.",
+    desc: "Mushaf geleneğine sadık dijital bir hat. Tecvid renkleri ve hareke desteğiyle zenginleştirilmiş.",
   },
   {
     id: "scheherazade-new",
@@ -47,7 +47,7 @@ export const ARABIC_FONTS: ArabicFont[] = [
     googleUrl:
       "https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap",
     group: "classic",
-    desc: "Geleneksel Nesih stili. Uzun okumalar için yüksek okunabilirlik.",
+    desc: "Nesih geleneğinden beslenen zarif bir tasarım. Uzun tilavetlerde göze huzur verir.",
   },
   {
     id: "amiri",
@@ -57,7 +57,7 @@ export const ARABIC_FONTS: ArabicFont[] = [
     googleUrl:
       "https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap",
     group: "classic",
-    desc: "Bulak baskısından esinlenen klasik Nesih. Zarif ve geleneksel.",
+    desc: "Mısır Bulak matbaasının ruhunu taşıyan klasik bir Nesih yorumu. Asalet ve sadelik bir arada.",
   },
   // ── Modern & Temiz ──
   {
@@ -68,7 +68,7 @@ export const ARABIC_FONTS: ArabicFont[] = [
     googleUrl:
       "https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap",
     group: "modern",
-    desc: "Google'un çok dilli Noto ailesi. Temiz, tutarlı ve net.",
+    desc: "Dünya dillerini kucaklayan geniş bir ailenin Arapça üyesi. Berrak ve tutarlı bir okuma deneyimi sunar.",
   },
   {
     id: "rubik",
@@ -78,7 +78,7 @@ export const ARABIC_FONTS: ArabicFont[] = [
     googleUrl:
       "https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap",
     group: "modern",
-    desc: "Yuvarlatılmış geometrik sans-serif. Modern ve sade.",
+    desc: "Yumuşak hatlarıyla göze dost, çağdaş bir tasarım. Ekranda ferah ve akıcı.",
   },
   {
     id: "zain",
@@ -88,7 +88,7 @@ export const ARABIC_FONTS: ArabicFont[] = [
     googleUrl:
       "https://fonts.googleapis.com/css2?family=Zain:wght@300;400;700;800&display=swap",
     group: "modern",
-    desc: "Minimalist ve açık hatlı tasarım. Ekranda rahat okunur.",
+    desc: "Sadeliğin zarafete dönüştüğü ince bir çizgi. Dijital okumalar için göz yormayan bir tercih.",
   },
   {
     id: "reem-kufi",
@@ -98,7 +98,7 @@ export const ARABIC_FONTS: ArabicFont[] = [
     googleUrl:
       "https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@400;500;600;700&display=swap",
     group: "modern",
-    desc: "Modern Kûfi stili. Geometrik ve dikkat çekici başlıklar için ideal.",
+    desc: "Kûfi geleneğini çağdaş çizgilerle yorumlayan güçlü bir karakter. Başlıklarda etkileyici.",
   },
   // ── Hat & Dekoratif ──
   {
@@ -109,7 +109,7 @@ export const ARABIC_FONTS: ArabicFont[] = [
     googleUrl:
       "https://fonts.googleapis.com/css2?family=Playpen+Sans+Arabic:wght@400;500;600;700&display=swap",
     group: "decorative",
-    desc: "El yazısı tarzında samimi ve rahat. Günlük okuma için keyifli.",
+    desc: "El yazısının sıcaklığını dijitale taşıyan samimi bir hat. Günlük okumaları keyifli kılar.",
   },
 ];
 
