@@ -23,9 +23,15 @@ importers:
       '@mahfuz/api':
         specifier: workspace:*
         version: link:../../packages/api
+      '@mahfuz/audio-engine':
+        specifier: workspace:*
+        version: link:../../packages/audio-engine
       '@mahfuz/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@mahfuz/gamification':
+        specifier: workspace:*
+        version: link:../../packages/gamification
       '@mahfuz/memorization':
         specifier: workspace:*
         version: link:../../packages/memorization
