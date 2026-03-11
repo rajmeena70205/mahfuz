@@ -2,7 +2,7 @@
 
 <br>
 
-<img src="apps/web/public/images/mahfuz-logo.svg" width="320" alt="Mahfuz — محفوظ">
+<img src="apps/web/public/images/mahfuz-logo.png" width="320" alt="Mahfuz — محفوظ">
 
 <br>
 
@@ -79,7 +79,7 @@ Dev server runs at `http://localhost:3000`.
 | State | Zustand |
 | Database | Dexie v4 (IndexedDB) + Drizzle ORM + LibSQL |
 | Auth | Better Auth v1.5 |
-| Deploy | Netlify (SSR via Netlify Functions) |
+| Deploy | Docker (Node.js SSR via Dokploy) |
 | Package manager | pnpm 9 |
 
 ## Project Structure
