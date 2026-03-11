@@ -1007,6 +1007,15 @@ export const en = {
     install: "Install",
   },
 
+  // Sync
+  sync: {
+    synced: "Synced",
+    syncing: "Syncing...",
+    error: "Sync failed",
+    errorDesc: "Your data is saved locally. It will retry shortly.",
+    retry: "Retry Now",
+  },
+
   // Offline
   offline: {
     message: "You are offline. Showing cached data",

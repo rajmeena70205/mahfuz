@@ -1005,6 +1005,15 @@ export const tr = {
     install: "Yükle",
   },
 
+  // Sync
+  sync: {
+    synced: "Senkronize",
+    syncing: "Senkronize ediliyor...",
+    error: "Senkronizasyon başarısız",
+    errorDesc: "Verileriniz yerel olarak kaydedildi. Kısa süre içinde tekrar denenecek.",
+    retry: "Şimdi Dene",
+  },
+
   // Offline
   offline: {
     message: "Çevrimdışısınız. Önbellek verileri gösteriliyor",

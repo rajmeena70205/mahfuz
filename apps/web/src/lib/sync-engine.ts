@@ -143,11 +143,12 @@ export class SyncEngine {
       this.onStatusChange("idle");
     } catch (err) {
       this.retryCount++;
+      const message =
+        err instanceof Error ? err.message : "Sync failed";
+      console.error("[SyncEngine]", message);
+
       if (this.retryCount >= this.maxRetries) {
-        this.onStatusChange(
-          "error",
-          err instanceof Error ? err.message : "Sync failed",
-        );
+        this.onStatusChange("error", "sync_failed");
       } else {
         // Will retry on next interval
         this.onStatusChange("idle");

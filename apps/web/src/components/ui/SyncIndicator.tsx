@@ -1,14 +1,30 @@
+import { useState, useRef, useEffect } from "react";
 import { useSyncStore } from "~/stores/useSyncStore";
+import { useTranslation } from "~/hooks/useTranslation";
 
 export function SyncIndicator() {
   const status = useSyncStore((s) => s.status);
-  const lastError = useSyncStore((s) => s.lastError);
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Close on outside click
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
 
   if (status === "idle") {
     return (
       <span
         className="text-[var(--theme-text-quaternary)]"
-        title="Synced"
+        title={t.sync.synced}
       >
         <CloudCheckIcon />
       </span>
@@ -19,7 +35,7 @@ export function SyncIndicator() {
     return (
       <span
         className="animate-pulse text-primary-500"
-        title="Syncing..."
+        title={t.sync.syncing}
       >
         <CloudSyncIcon />
       </span>
@@ -28,12 +44,33 @@ export function SyncIndicator() {
 
   if (status === "error") {
     return (
-      <span
-        className="text-red-500"
-        title={lastError || "Sync error"}
-      >
-        <CloudErrorIcon />
-      </span>
+      <div ref={ref} className="relative">
+        <button
+          onClick={() => setOpen(!open)}
+          className="text-amber-500 transition-colors hover:text-amber-600"
+          aria-label={t.sync.error}
+        >
+          <CloudErrorIcon />
+        </button>
+
+        {open && (
+          <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-[var(--theme-border)] bg-[var(--theme-card-bg)] p-3 shadow-lg">
+            <div className="flex items-start gap-2">
+              <span className="mt-0.5 text-amber-500">
+                <CloudErrorIcon />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-[var(--theme-text)]">
+                  {t.sync.error}
+                </p>
+                <p className="mt-0.5 text-xs text-[var(--theme-text-tertiary)]">
+                  {t.sync.errorDesc}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     );
   }
 
