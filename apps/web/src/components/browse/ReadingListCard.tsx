@@ -42,7 +42,7 @@ export function ReadingListCard({ item, chapters }: ReadingListCardProps) {
 
   const to =
     item.type === "surah"
-      ? "/surah/$surahId"
+      ? "/$surahId"
       : item.type === "juz"
         ? "/juz/$juzId"
         : "/page/$pageNumber";
@@ -57,13 +57,10 @@ export function ReadingListCard({ item, chapters }: ReadingListCardProps) {
   return (
     <div className="relative w-[156px] shrink-0 snap-start sm:w-[176px]">
       <Link
-        to={to as "/surah/$surahId"}
+        to={to as "/$surahId"}
         params={params}
         className="block overflow-hidden rounded-2xl bg-[var(--theme-bg-primary)] shadow-[var(--shadow-card)] transition-all active:scale-[0.96] active:shadow-none"
       >
-        {/* Gradient accent bar */}
-        <div className="h-1 w-full bg-gradient-to-r from-primary-600 to-primary-400" />
-
         <div className="px-3.5 pb-3.5 pt-3">
           {/* Top row: type badge + number */}
           <div className="flex items-center justify-between">

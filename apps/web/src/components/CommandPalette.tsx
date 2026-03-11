@@ -54,7 +54,7 @@ function parseStructuralResults(
         type: "verse",
         label: `${getSurahName(ch.id, ch.translated_name.name, locale)} ${verseNum}`,
         sublabel: `${ch.name_simple} · ${surahNum}:${verseNum}`,
-        to: "/surah/$surahId",
+        to: "/$surahId",
         params: { surahId: String(surahNum) },
         search: { verse: String(verseNum) },
       });
@@ -113,7 +113,7 @@ function parseStructuralResults(
         type: "verse",
         label: `${getSurahName(matched.id, matched.translated_name.name, locale)} ${verseNum}`,
         sublabel: `${matched.name_simple} · ${matched.id}:${verseNum}`,
-        to: "/surah/$surahId",
+        to: "/$surahId",
         params: { surahId: String(matched.id) },
         search: { verse: String(verseNum) },
       });
@@ -122,7 +122,7 @@ function parseStructuralResults(
         type: "surah",
         label: `${getSurahName(matched.id, matched.translated_name.name, locale)}`,
         sublabel: `${matched.id}. ${t.commandPalette.surahUnit} · ${matched.verses_count} ${t.common.verse}`,
-        to: "/surah/$surahId",
+        to: "/$surahId",
         params: { surahId: String(matched.id) },
       });
       return results;
@@ -140,7 +140,7 @@ function parseStructuralResults(
           type: "surah",
           label: getSurahName(ch.id, ch.translated_name.name, locale),
           sublabel: `${ch.id}. ${t.commandPalette.surahUnit} · ${ch.name_simple} · ${ch.verses_count} ${t.common.verse}`,
-          to: "/surah/$surahId",
+          to: "/$surahId",
           params: { surahId: String(n) },
         });
       }
@@ -181,7 +181,7 @@ function parseStructuralResults(
       type: "surah",
       label: getSurahName(ch.id, ch.translated_name.name, locale),
       sublabel: `${ch.id}. ${t.commandPalette.surahUnit} · ${ch.name_simple} · ${ch.verses_count} ${t.common.verse}`,
-      to: "/surah/$surahId",
+      to: "/$surahId",
       params: { surahId: String(ch.id) },
     });
   }
@@ -289,7 +289,7 @@ export function CommandPalette({ onClose }: { onClose: () => void }) {
           const [surahId, verseNum] = result.verse_key.split(":");
           onClose();
           navigate({
-            to: "/surah/$surahId",
+            to: "/$surahId",
             params: { surahId },
             search: { verse: verseNum },
           });

@@ -20,12 +20,12 @@ function LandingPage() {
       <header className="glass sticky top-0 z-20 border-b border-black/[0.06] px-6 py-3">
         <div className="mx-auto flex max-w-[980px] items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/images/mahfuz-logo.svg" alt="Mahfuz" className="logo-invert h-8 w-auto" />
+            <img src="/images/mahfuz-logo.png" alt="Mahfuz" className="h-8 w-auto" />
           </Link>
           <nav className="flex items-center gap-1">
             {session ? (
               <Link
-                to="/surah"
+                to="/browse"
                 className="rounded-full bg-primary-600 px-5 py-1.5 text-xs font-medium text-white transition-all hover:bg-primary-700 active:scale-[0.97]"
               >
                 {t.landing.goToApp}
@@ -33,7 +33,7 @@ function LandingPage() {
             ) : (
               <>
                 <Link
-                  to="/surah"
+                  to="/browse"
                   className="hidden rounded-full px-4 py-1.5 text-xs font-medium text-[#1d1d1f] transition-colors hover:bg-black/[0.04] sm:block"
                 >
                   {t.landing.startReading}
@@ -73,7 +73,7 @@ function LandingPage() {
             {/* CTAs: Apple pill buttons */}
             <div className="animate-fade-in mb-16 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Link
-                to="/surah"
+                to="/browse"
                 className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-8 py-3 text-[17px] font-medium text-white transition-all hover:bg-primary-700 active:scale-[0.97]"
               >
                 {t.landing.ctaRead}
@@ -162,7 +162,7 @@ function LandingPage() {
       <footer className="border-t border-[#d2d2d7] bg-[#f5f5f7] px-6 py-5">
         <div className="mx-auto flex max-w-[980px] flex-col items-center justify-between gap-3 sm:flex-row">
           <div className="flex items-center gap-3">
-            <img src="/images/mahfuz-logo.svg" alt="Mahfuz" className="logo-invert h-6 w-auto" />
+            <img src="/images/mahfuz-logo.png" alt="Mahfuz" className="h-6 w-auto" />
             <span className="text-xs text-[#86868b]">{t.footer.tagline}</span>
           </div>
           <a

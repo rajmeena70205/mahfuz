@@ -7,6 +7,7 @@ interface TabItem {
   label: string;
   icon: (active: boolean) => React.ReactNode;
   matchPatterns: string[];
+  extraActive?: boolean;
   visible: boolean;
 }
 
@@ -17,13 +18,15 @@ export function BottomTabBar() {
   const matches = useMatches();
 
   const currentPath = matches[matches.length - 1]?.fullPath ?? "";
+  const isSurahRoute = matches.some((m) => m.routeId === "/_app/$surahId/" || m.routeId === "/_app/$surahId/$verseNum");
 
   const tabs: TabItem[] = [
     {
       to: "/browse",
       label: t.nav.browse,
       icon: (active) => <BookIcon active={active} />,
-      matchPatterns: ["/browse", "/surah/", "/page/", "/juz/"],
+      matchPatterns: ["/browse", "/page/", "/juz/"],
+      extraActive: isSurahRoute,
       visible: true,
     },
     {
@@ -51,14 +54,14 @@ export function BottomTabBar() {
 
   const visibleTabs = tabs.filter((tab) => tab.visible);
 
-  const isActive = (patterns: string[]) =>
-    patterns.some((p) => currentPath === p || currentPath.startsWith(p));
+  const isActive = (tab: TabItem) =>
+    tab.extraActive || tab.matchPatterns.some((p) => currentPath === p || currentPath.startsWith(p));
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-30 border-t border-[var(--theme-border)] bg-[var(--theme-bg-primary)]/80 backdrop-blur-xl backdrop-saturate-150 lg:hidden" role="navigation" aria-label="Main navigation" style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
       <div className="flex h-[60px] items-center justify-around px-2">
         {visibleTabs.map((tab) => {
-          const active = isActive(tab.matchPatterns);
+          const active = isActive(tab);
           return (
             <Link
               key={tab.to}

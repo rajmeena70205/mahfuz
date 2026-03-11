@@ -114,7 +114,7 @@ export function SurahListPanel() {
 
       {/* Chapter list */}
       {filtered.length > 0 ? (
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
           {filtered.map((chapter) => (
             <ChapterCard key={chapter.id} chapter={chapter} />
           ))}

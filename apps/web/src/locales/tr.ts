@@ -211,6 +211,11 @@ export const tr = {
     sortOrder: "Tertip",
     sortRevelation: "Nüzul",
     reference: "referans",
+    topicIndex: "Konu Fihristi",
+    searchTopics: "Konu ara...",
+    topicCount: "konu",
+    categoryStats: "{categories} kategori · {topics} konu",
+    resultCount: "{count} sonuç",
     noResultsHint: "Farklı bir filtre veya arama terimi deneyin",
     dailyVerse: "Günün Ayeti",
     shareVerse: "Paylaş",
@@ -285,6 +290,7 @@ export const tr = {
     sectionLangNav: "Dil & Gezinme",
     saved: "Kaydedildi",
     colorOff: "Kapalı",
+    controlPanel: "Kontrol Paneli",
   },
 
   // Reading / Toolbar
@@ -329,6 +335,13 @@ export const tr = {
     readyTitle: "Hazırsınız!",
     readySubtitle: "Bismillah ile başlayalım",
     showAgain: "Karşılama ekranını tekrar göster",
+    advanced: "Gelişmiş Ayarlar",
+    font: "Arapça Font",
+    reciter: "Kâri",
+    script: "Yazı Tipi",
+    uthmani: "Osmânî",
+    simple: "Basit",
+    changeReciter: "Değiştir",
   },
 
   // Translation Picker

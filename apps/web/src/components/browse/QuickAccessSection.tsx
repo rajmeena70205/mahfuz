@@ -20,7 +20,7 @@ export function QuickAccessSection() {
         {popular.map((c) => (
           <Link
             key={c!.id}
-            to="/surah/$surahId"
+            to="/$surahId"
             params={{ surahId: String(c!.id) }}
             className="flex shrink-0 items-center gap-2 rounded-xl border border-[var(--theme-border)] bg-[var(--theme-bg-primary)] px-3 py-2 transition-all hover:shadow-[var(--shadow-card)] active:scale-[0.97]"
           >

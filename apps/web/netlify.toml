@@ -4,3 +4,19 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+# Redirects for old URL structure
+[[redirects]]
+  from = "/surah/:id"
+  to = "/:id"
+  status = 301
+
+[[redirects]]
+  from = "/surah"
+  to = "/browse"
+  status = 301
+
+[[redirects]]
+  from = "/verse"
+  to = "/browse"
+  status = 301

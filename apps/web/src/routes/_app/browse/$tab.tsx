@@ -14,8 +14,7 @@ import { ContinueReadingSection } from "~/components/browse/ContinueReadingSecti
 import { DailyVerseCard } from "~/components/browse/DailyVerseCard";
 import { QuickAccessSection } from "~/components/browse/QuickAccessSection";
 import { useReadingListStore } from "~/stores/useReadingListStore";
-import { usePreferencesStore } from "~/stores/usePreferencesStore";
-import { Onboarding } from "~/components/Onboarding";
+
 
 const VALID_TABS = ["surahs", "juzs", "pages", "index"] as const;
 type TabType = (typeof VALID_TABS)[number];
@@ -36,7 +35,7 @@ export const Route = createFileRoute("/_app/browse/$tab")({
     ]);
   },
   pendingComponent: () => (
-    <div className="mx-auto max-w-[680px] px-5 py-5 sm:px-6 sm:py-10">
+    <div className="mx-auto max-w-[680px] px-5 py-5 sm:px-6 sm:py-10 lg:max-w-[960px]">
       <Skeleton className="mb-5 h-8 w-40" />
       <Skeleton variant="card" className="mb-5 h-10" />
       <div className="space-y-2">
@@ -68,8 +67,6 @@ function BrowsePage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const hasItems = useReadingListStore((s) => s.items.length > 0);
-  const hasSeenOnboarding = usePreferencesStore((s) => s.hasSeenOnboarding);
-
   const currentTab = tab as TabType;
 
   const TAB_OPTIONS = [
@@ -98,8 +95,6 @@ function BrowsePage() {
 
   return (
     <div className="mx-auto max-w-[680px] px-5 py-5 sm:px-6 sm:py-10 lg:max-w-[960px]">
-      {!hasSeenOnboarding && <Onboarding />}
-
       {/* Daily Verse */}
       <DailyVerseCard />
 

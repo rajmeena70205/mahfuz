@@ -36,7 +36,13 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         content:
           "Kuran-ı Kerim'i okuyun, dinleyin, ezberleyin. Açık kaynak Kuran uygulaması.",
       },
-      { name: "theme-color", content: "#059669" },
+      { name: "theme-color", content: "#1c3f44" },
+      { property: "og:title", content: "Mahfuz | Kuran-ı Kerim" },
+      { property: "og:description", content: "Kuran-ı Kerim'i okuyun, dinleyin, ezberleyin. Açık kaynak Kuran uygulaması." },
+      { property: "og:image", content: "/images/og-image.png" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "/images/og-image.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -58,7 +64,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         crossOrigin: "anonymous",
       },
       { rel: "manifest", href: "/manifest.json" },
-      { rel: "icon", href: "/images/mahfuz-logo.svg", type: "image/svg+xml" },
+      { rel: "icon", href: "/images/mahfuz-logo.png", type: "image/png" },
       { rel: "icon", href: "/icons/favicon-32.png", sizes: "32x32", type: "image/png" },
       { rel: "icon", href: "/icons/favicon-16.png", sizes: "16x16", type: "image/png" },
       {
@@ -115,7 +121,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   const locale = useI18nStore((s) => s.locale);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>

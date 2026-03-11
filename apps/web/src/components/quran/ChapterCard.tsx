@@ -15,7 +15,7 @@ export const ChapterCard = memo(function ChapterCard({ chapter }: ChapterCardPro
 
   return (
     <Link
-      to="/surah/$surahId"
+      to="/$surahId"
       params={{ surahId: String(chapter.id) }}
       className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-[var(--theme-bg-primary)] p-4 transition-all hover:shadow-[var(--shadow-elevated)] active:scale-[0.98]"
     >
@@ -53,10 +53,8 @@ export const ChapterCard = memo(function ChapterCard({ chapter }: ChapterCardPro
         <h3 className="truncate text-[14px] font-semibold leading-snug text-[var(--theme-text)]">
           {surahName}
         </h3>
-        <p className="mt-0.5 text-[11px] leading-normal text-[var(--theme-text-tertiary)]">
+        <p className="mt-0.5 truncate text-[11px] leading-normal text-[var(--theme-text-tertiary)]">
           {chapter.name_simple}
-          <span className="mx-1 opacity-40">·</span>
-          {chapter.verses_count} {t.browse.versesCount}
         </p>
       </div>
     </Link>

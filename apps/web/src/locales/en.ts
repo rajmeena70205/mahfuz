@@ -213,6 +213,11 @@ export const en = {
     sortOrder: "Order",
     sortRevelation: "Revelation",
     reference: "references",
+    topicIndex: "Topic Index",
+    searchTopics: "Search topics...",
+    topicCount: "topics",
+    categoryStats: "{categories} categories · {topics} topics",
+    resultCount: "{count} results",
     noResultsHint: "Try a different filter or search term",
     dailyVerse: "Verse of the Day",
     shareVerse: "Share",
@@ -287,6 +292,7 @@ export const en = {
     sectionLangNav: "Language & Navigation",
     saved: "Saved",
     colorOff: "Off",
+    controlPanel: "Control Panel",
   },
 
   // Reading / Toolbar
@@ -329,6 +335,13 @@ export const en = {
     readyTitle: "You're Ready!",
     readySubtitle: "Let's begin with Bismillah",
     showAgain: "Show welcome screen again",
+    advanced: "Advanced Settings",
+    font: "Arabic Font",
+    reciter: "Reciter",
+    script: "Script Style",
+    uthmani: "Uthmani",
+    simple: "Simple",
+    changeReciter: "Change",
   },
 
   // Translation Picker

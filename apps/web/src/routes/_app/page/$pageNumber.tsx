@@ -421,7 +421,7 @@ function MushafPageView() {
               {(groupIndex > 0 || isNewSurah) && group.chapter && (
                 <div className="mb-4 mt-8 text-center first:mt-0">
                   <Link
-                    to="/surah/$surahId"
+                    to="/$surahId"
                     params={{ surahId: String(group.chapterId) }}
                     className="inline-flex items-center gap-2 rounded-full bg-[var(--theme-pill-bg)] px-4 py-2 transition-colors hover:shadow-[var(--shadow-elevated)]"
                   >

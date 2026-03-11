@@ -30,7 +30,7 @@ function RegisterPage() {
         setError(result.error.message || t.auth.registerFailed);
       } else {
         await router.invalidate();
-        router.navigate({ to: redirect || "/surah" });
+        router.navigate({ to: redirect || "/browse" });
       }
     } catch {
       setError(t.auth.registerError);
@@ -44,7 +44,7 @@ function RegisterPage() {
     try {
       const result = await signIn.social({
         provider: "google",
-        callbackURL: redirect || "/surah",
+        callbackURL: redirect || "/browse",
       });
       if (result?.error) {
         setError(result.error.message || t.auth.googleRegisterFailed);
@@ -59,7 +59,7 @@ function RegisterPage() {
     try {
       const result = await signIn.social({
         provider: "apple",
-        callbackURL: redirect || "/surah",
+        callbackURL: redirect || "/browse",
       });
       if (result?.error) {
         setError(result.error.message || t.auth.appleRegisterFailed);

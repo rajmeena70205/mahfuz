@@ -29,7 +29,7 @@ function LoginPage() {
         setError(result.error.message || t.auth.loginFailed);
       } else {
         await router.invalidate();
-        router.navigate({ to: redirect || "/surah" });
+        router.navigate({ to: redirect || "/browse" });
       }
     } catch {
       setError(t.auth.loginError);
@@ -43,7 +43,7 @@ function LoginPage() {
     try {
       const result = await signIn.social({
         provider: "google",
-        callbackURL: redirect || "/surah",
+        callbackURL: redirect || "/browse",
       });
       if (result?.error) {
         setError(result.error.message || t.auth.googleLoginFailed);
@@ -58,7 +58,7 @@ function LoginPage() {
     try {
       const result = await signIn.social({
         provider: "apple",
-        callbackURL: redirect || "/surah",
+        callbackURL: redirect || "/browse",
       });
       if (result?.error) {
         setError(result.error.message || t.auth.appleLoginFailed);

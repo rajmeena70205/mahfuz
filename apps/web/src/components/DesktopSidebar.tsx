@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Link, useParams } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { chaptersQueryOptions } from "~/hooks/useChapters";
@@ -7,7 +7,13 @@ import { useTranslation } from "~/hooks/useTranslation";
 import { getSurahName } from "~/lib/surah-name";
 
 export function DesktopSidebar() {
-  const collapsed = usePreferencesStore((s) => s.sidebarCollapsed);
+  const collapsedRaw = usePreferencesStore((s) => s.sidebarCollapsed);
+  const hasMounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+  const collapsed = !hasMounted || collapsedRaw;
   const setCollapsed = usePreferencesStore((s) => s.setSidebarCollapsed);
   const { t, locale } = useTranslation();
   const [search, setSearch] = useState("");
@@ -60,7 +66,7 @@ export function DesktopSidebar() {
             {filtered?.map((c) => (
               <Link
                 key={c.id}
-                to="/surah/$surahId"
+                to="/$surahId"
                 params={{ surahId: String(c.id) }}
                 className={`flex items-center gap-2.5 px-3 py-2 text-left transition-colors hover:bg-[var(--theme-hover-bg)] ${
                   activeSurahId === c.id

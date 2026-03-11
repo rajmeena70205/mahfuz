@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, Link, useRouter, useMatches, useLocation } from "@tanstack/react-router";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useSyncExternalStore } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { signOut } from "~/lib/auth-client";
 import { AudioProvider, AudioBar } from "~/components/audio";
@@ -17,6 +17,7 @@ import type { Chapter } from "@mahfuz/shared/types";
 import { TOTAL_PAGES } from "@mahfuz/shared/constants";
 import { QUERY_KEYS } from "~/lib/query-keys";
 import { getSurahName } from "~/lib/surah-name";
+import { Onboarding } from "~/components/Onboarding";
 
 export const Route = createFileRoute("/_app")({
   component: AppLayout,
@@ -39,8 +40,17 @@ function AppLayout() {
   const queryClient = useQueryClient();
   const { t, locale } = useTranslation();
   const location = useLocation();
-  const sidebarCollapsed = usePreferencesStore((s) => s.sidebarCollapsed);
+  const sidebarCollapsedRaw = usePreferencesStore((s) => s.sidebarCollapsed);
   const setSidebarCollapsed = usePreferencesStore((s) => s.setSidebarCollapsed);
+  const hasSeenOnboarding = usePreferencesStore((s) => s.hasSeenOnboarding);
+
+  // Prevent SSR/client hydration mismatch: sidebar collapsed until client mounts
+  const hasMounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+  const sidebarCollapsed = !hasMounted || sidebarCollapsedRaw;
 
   // Global Cmd+K / Ctrl+K shortcut
   useEffect(() => {
@@ -79,7 +89,7 @@ function AppLayout() {
   }, [session?.user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Detect surah page and get chapter info from cache
-  const surahMatch = matches.find((m) => m.routeId === "/_app/surah/$surahId");
+  const surahMatch = matches.find((m) => m.routeId === "/_app/$surahId/" || m.routeId === "/_app/$surahId/$verseNum");
   const surahId = (surahMatch?.params as { surahId?: string })?.surahId
     ? Number((surahMatch!.params as { surahId: string }).surahId)
     : null;
@@ -131,14 +141,14 @@ function AppLayout() {
           <div className="flex min-w-0 items-center gap-1">
             {/* Logo */}
             <Link to="/browse" className="mr-1.5 flex shrink-0 items-center gap-2 sm:mr-3">
-              <img src="/images/mahfuz-logo.svg" alt="Mahfuz" className="logo-invert h-8 w-auto lg:h-10" />
+              <img src="/images/mahfuz-logo.png" alt="Mahfuz" className="h-16 w-auto lg:h-20 -my-3" />
             </Link>
 
             {/* Chapter/page prev/next (surah detail) */}
             {chapter && (
               <div className="relative flex items-center border-l border-[var(--theme-border)] pl-2 ml-2">
                 <Link
-                  to="/surah/$surahId"
+                  to="/$surahId"
                   params={{ surahId: String(Math.max(1, chapter.id - 1)) }}
                   className={`shrink-0 rounded-md p-1 transition-colors hover:bg-[var(--theme-hover-bg)] hover:text-[var(--theme-text)] ${chapter.id > 1 ? "text-[var(--theme-text-tertiary)]" : "pointer-events-none invisible"}`}
                   aria-label={t.nav.prevSurah}
@@ -177,7 +187,7 @@ function AppLayout() {
                   </svg>
                 </button>
                 <Link
-                  to="/surah/$surahId"
+                  to="/$surahId"
                   params={{ surahId: String(Math.min(114, chapter.id + 1)) }}
                   className={`shrink-0 rounded-md p-1 transition-colors hover:bg-[var(--theme-hover-bg)] hover:text-[var(--theme-text)] ${chapter.id < 114 ? "text-[var(--theme-text-tertiary)]" : "pointer-events-none invisible"}`}
                   aria-label={t.nav.nextSurah}
@@ -192,7 +202,7 @@ function AppLayout() {
                     onSelect={(id) => {
                       setPickerOpen(false);
                       router.navigate({
-                        to: "/surah/$surahId",
+                        to: "/$surahId",
                         params: { surahId: String(id) },
                       });
                     }}
@@ -342,7 +352,7 @@ function AppLayout() {
           <button
             type="button"
             onClick={() => setPaletteOpen(true)}
-            className="mx-auto flex w-full max-w-[680px] items-center gap-2.5 rounded-xl bg-[var(--theme-input-bg)] px-3.5 py-2 text-left transition-colors hover:bg-[var(--theme-bg-primary)] hover:shadow-[var(--shadow-elevated)]"
+            className="mx-auto flex w-full max-w-[680px] items-center gap-2.5 rounded-xl bg-[var(--theme-input-bg)] px-3.5 py-2 text-left transition-colors hover:bg-[var(--theme-bg-primary)] hover:shadow-[var(--shadow-elevated)] lg:max-w-[960px]"
           >
             <svg
               className="h-4 w-4 shrink-0 text-[var(--theme-text-tertiary)]"
@@ -418,6 +428,7 @@ function AppLayout() {
       <AudioProvider />
       <AudioBar />
       <BottomTabBar />
+      {!hasSeenOnboarding && <Onboarding />}
     </div>
   );
 }

@@ -259,7 +259,7 @@ export function AudioBar() {
           <div className="flex items-center gap-3">
             {/* Info: tap to navigate to surah */}
             <Link
-              to="/surah/$surahId"
+              to="/$surahId"
               params={{ surahId: String(chapterId) }}
               className="min-w-0 flex-1"
             >

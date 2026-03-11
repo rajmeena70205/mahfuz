@@ -11,7 +11,7 @@ function AuthCallback() {
   useEffect(() => {
     const redirect = async () => {
       await router.invalidate();
-      router.navigate({ to: "/surah" });
+      router.navigate({ to: "/browse" });
     };
     redirect();
   }, [router]);

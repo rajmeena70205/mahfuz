@@ -193,11 +193,6 @@
   font-display: swap;
 }
 
-/* Logo invert for dark themes */
-[data-theme="dark"] .logo-invert,
-[data-theme="dimmed"] .logo-invert {
-  filter: invert(1);
-}
 
 /* Base */
 html {

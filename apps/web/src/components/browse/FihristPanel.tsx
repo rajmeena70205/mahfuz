@@ -149,7 +149,7 @@ export function FihristPanel({ initialTopic }: { initialTopic?: number }) {
                     <td className="px-3 py-2 tabular-nums text-[var(--theme-text-tertiary)]">{ch.id}</td>
                     <td className="px-3 py-2">
                       <Link
-                        to="/surah/$surahId"
+                        to="/$surahId"
                         params={{ surahId: String(ch.id) }}
                         className="font-medium text-[var(--theme-text)] hover:text-primary-600"
                       >
@@ -286,7 +286,7 @@ function TopicGrid({
   onSelect: (i: number) => void;
   chapters: Chapter[];
 }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const gridRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
   const [cols, setCols] = useState(3);
@@ -346,7 +346,7 @@ function TopicGrid({
             isOpen ? "text-primary-700" : "text-[var(--theme-text-secondary)]"
           }`}
         >
-          {entry.topic}
+          {locale === "en" ? entry.topicEn : entry.topic}
         </span>
       </button>,
     );
@@ -374,7 +374,7 @@ function TopicGrid({
             <span className="text-[22px] leading-none">{topic.icon}</span>
             <div className="flex-1">
               <h3 className="text-[14px] font-semibold text-[var(--theme-text)]">
-                {topic.topic}
+                {locale === "en" ? topic.topicEn : topic.topic}
               </h3>
               <span className="text-[11px] text-[var(--theme-text-quaternary)]">
                 {topic.refs.length} {t.browse.reference}
@@ -400,7 +400,7 @@ function TopicGrid({
               return (
                 <Link
                   key={ref}
-                  to="/surah/$surahId"
+                  to="/$surahId"
                   params={{ surahId: surah }}
                   search={{ topic: openTopic!, verse: firstVerse ? Number(firstVerse) : undefined }}
                   className="group flex items-center gap-2 rounded-lg bg-[var(--theme-hover-bg)] px-3 py-1.5 transition-colors hover:bg-primary-600/10"

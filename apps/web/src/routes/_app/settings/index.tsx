@@ -122,58 +122,32 @@ function IconGlobe() {
   );
 }
 
-// ─── SettingsAccordion ──────────────────────────────────────────────
-function SettingsAccordion({
+// ─── ControlPanelCard ──────────────────────────────────────────────
+function ControlPanelCard({
   title,
   summary,
   icon,
-  isOpen,
-  onToggle,
-  children,
+  onClick,
 }: {
   title: string;
   summary: string;
   icon: React.ReactNode;
-  isOpen: boolean;
-  onToggle: () => void;
-  children: React.ReactNode;
+  onClick: () => void;
 }) {
   return (
-    <div className="rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-bg-primary)] overflow-hidden">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="flex w-full items-center gap-3 px-5 py-4 text-left transition-colors hover:bg-[var(--theme-bg)]"
-      >
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-600/10 text-primary-700">
-          {icon}
-        </span>
-        <div className="flex-1 min-w-0">
-          <span className="block text-[14px] font-semibold text-[var(--theme-text)]">{title}</span>
-          <span className="block truncate text-[12px] text-[var(--theme-text-tertiary)]">{summary}</span>
-        </div>
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className={`shrink-0 text-[var(--theme-text-tertiary)] transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-        >
-          <path d="M4 6l4 4 4-4" />
-        </svg>
-      </button>
-      <div className="accordion-grid" data-open={isOpen}>
-        <div className="overflow-hidden">
-          <div className="px-5 pb-5 pt-1">
-            {children}
-          </div>
-        </div>
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex flex-col items-center gap-3 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-bg-primary)] px-4 py-5 text-center transition-all hover:scale-[1.02] hover:shadow-md hover:border-[var(--theme-divider)] active:scale-[0.98]"
+    >
+      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600/10 text-primary-700">
+        {icon}
+      </span>
+      <div className="min-w-0 w-full">
+        <span className="block text-[13px] font-semibold text-[var(--theme-text)]">{title}</span>
+        <span className="block truncate text-[11px] text-[var(--theme-text-tertiary)] mt-0.5">{summary}</span>
       </div>
-    </div>
+    </button>
   );
 }
 
@@ -248,7 +222,7 @@ function SettingsPage() {
   }, [arabicFontId, viewMode, colorizeWords, colorPaletteId, textType, theme, normalArabicFontSize, normalTranslationFontSize, wbwArabicFontSize, mushafArabicFontSize, showLearnTab, showMemorizeTab, wbwShowWordTranslation, wbwShowWordTransliteration, wordTranslationSize, wordTransliterationSize, reciterId, locale]);
 
   const activeColors = getActiveColors({ colorPaletteId });
-  const [openSections, setOpenSections] = useState<Set<AccordionSection>>(new Set());
+  const [activeSection, setActiveSection] = useState<AccordionSection | null>(null);
   const [readingModeTab, setReadingModeTab] = useState<ReadingModeTab>(viewMode);
 
   const READING_MODE_OPTIONS: { value: ReadingModeTab; label: string }[] = [
@@ -282,15 +256,6 @@ function SettingsPage() {
 
   const currentFont = getArabicFont(arabicFontId);
 
-  const toggleSection = (section: AccordionSection) => {
-    setOpenSections((prev) => {
-      const next = new Set(prev);
-      if (next.has(section)) next.delete(section);
-      else next.add(section);
-      return next;
-    });
-  };
-
   // ── Summaries ──
   const fontSummary = currentFont.name;
   const wordColorSummary = colorizeWords
@@ -302,24 +267,22 @@ function SettingsPage() {
   const readingModeSummary = t.settings.viewModes[viewMode];
   const langSummary = locale === "tr" ? "Türkçe" : "English";
 
-  return (
-    <div className="mx-auto max-w-2xl px-6 py-8">
-      <h1 className="mb-1 text-2xl font-bold tracking-tight text-[var(--theme-text)]">
-        {t.settings.title}
-      </h1>
-      <p className="mb-6 text-sm text-[var(--theme-text-tertiary)]">
-        {t.settings.subtitle}
-      </p>
+  // ── Section titles & icons ──
+  const sections: { id: AccordionSection; title: string; summary: string; icon: React.ReactNode }[] = [
+    { id: "font", title: t.settings.sectionFont, summary: fontSummary, icon: <IconFont /> },
+    { id: "wordColor", title: t.settings.sectionWordColor, summary: wordColorSummary, icon: <IconDroplet /> },
+    { id: "script", title: t.settings.sectionScript, summary: scriptSummary, icon: <IconPen /> },
+    { id: "reciter", title: t.settings.sectionReciter, summary: reciterSummary, icon: <IconMicrophone /> },
+    { id: "theme", title: t.settings.sectionTheme, summary: themeSummary, icon: <IconPalette /> },
+    { id: "readingMode", title: t.settings.sectionReadingMode, summary: readingModeSummary, icon: <IconBook /> },
+    { id: "langNav", title: t.settings.sectionLangNav, summary: langSummary, icon: <IconGlobe /> },
+  ];
 
-      <div className="space-y-3">
-        {/* ═══ FONT ═══ */}
-        <SettingsAccordion
-          title={t.settings.sectionFont}
-          summary={fontSummary}
-          icon={<IconFont />}
-          isOpen={openSections.has("font")}
-          onToggle={() => toggleSection("font")}
-        >
+  // ── Section content renderer ──
+  function renderSectionContent(section: AccordionSection) {
+    switch (section) {
+      case "font":
+        return (
           <FontPickerSection
             arabicFontId={arabicFontId}
             onFontChange={setArabicFont}
@@ -327,257 +290,277 @@ function SettingsPage() {
             colors={activeColors}
             textType={textType}
           />
-        </SettingsAccordion>
-
-        {/* ═══ WORD COLOR ═══ */}
-        <SettingsAccordion
-          title={t.settings.sectionWordColor}
-          summary={wordColorSummary}
-          icon={<IconDroplet />}
-          isOpen={openSections.has("wordColor")}
-          onToggle={() => toggleSection("wordColor")}
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <SettingsLabel>{t.settings.colorizeWords}</SettingsLabel>
-              <p className="mt-0.5 text-[12px] text-[var(--theme-text-tertiary)]">
-                {t.settings.colorizeWordsDesc}
-              </p>
-            </div>
-            <ToggleSwitch checked={colorizeWords} onChange={setColorizeWords} />
-          </div>
-          {colorizeWords && (
-            <div className="mt-4">
-              <SettingsLabel>{t.settings.colorPalette}</SettingsLabel>
-              <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
-                {COLOR_PALETTES.map((palette) => {
-                  const active = colorPaletteId === palette.id;
-                  return (
-                    <button
-                      key={palette.id}
-                      type="button"
-                      onClick={() => setColorPalette(palette.id)}
-                      className={`flex flex-col items-center gap-2 rounded-2xl border px-3 py-3 transition-all ${
-                        active
-                          ? "border-primary-500 bg-primary-50 shadow-sm"
-                          : "border-[var(--theme-border)] bg-[var(--theme-bg)] hover:border-[var(--theme-divider)]"
-                      }`}
-                    >
-                      <div className="flex gap-1">
-                        {palette.colors.slice(0, 5).map((color, i) => (
-                          <span key={i} className="h-4 w-4 rounded-full" style={{ backgroundColor: color }} />
-                        ))}
-                      </div>
-                      <span className={`text-[12px] font-medium ${active ? "text-primary-700" : "text-[var(--theme-text)]"}`}>
-                        {palette.name}
-                      </span>
-                    </button>
-                  );
-                })}
+        );
+      case "wordColor":
+        return (
+          <>
+            <div className="flex items-center justify-between">
+              <div>
+                <SettingsLabel>{t.settings.colorizeWords}</SettingsLabel>
+                <p className="mt-0.5 text-[12px] text-[var(--theme-text-tertiary)]">
+                  {t.settings.colorizeWordsDesc}
+                </p>
               </div>
+              <ToggleSwitch checked={colorizeWords} onChange={setColorizeWords} />
             </div>
-          )}
-        </SettingsAccordion>
-
-        {/* ═══ SCRIPT STYLE ═══ */}
-        <SettingsAccordion
-          title={t.settings.sectionScript}
-          summary={scriptSummary}
-          icon={<IconPen />}
-          isOpen={openSections.has("script")}
-          onToggle={() => toggleSection("script")}
-        >
-          <h3 className="mb-3 text-[13px] font-semibold text-[var(--theme-text)]">{t.settings.textType}</h3>
-          <SegmentedControl
-            options={[
-              { value: "uthmani" as const, label: t.settings.textTypeUthmani },
-              { value: "simple" as const, label: t.settings.textTypeSimple },
-            ]}
-            value={textType}
-            onChange={setTextType}
-            stretch
-          />
-        </SettingsAccordion>
-
-        {/* ═══ RECITER ═══ */}
-        <SettingsAccordion
-          title={t.settings.sectionReciter}
-          summary={reciterSummary}
-          icon={<IconMicrophone />}
-          isOpen={openSections.has("reciter")}
-          onToggle={() => toggleSection("reciter")}
-        >
-          <SettingsLabel label={t.settings.reciter} description={t.settings.reciterDesc} />
-          <button
-            type="button"
-            onClick={() => setReciterModalOpen(true)}
-            className="mt-3 flex w-full items-center gap-3 rounded-xl border border-[var(--theme-border)] bg-[var(--theme-bg)] px-4 py-3 text-left transition-colors hover:border-[var(--theme-divider)]"
-          >
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-600/10 text-[14px] font-semibold text-primary-700">
-              {currentReciter?.name.charAt(0) ?? "?"}
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="block truncate text-[14px] font-medium text-[var(--theme-text)]">
-                {currentReciter?.name ?? "—"}
-              </span>
-              {currentReciter && (
-                <span className="block text-[12px] text-[var(--theme-text-tertiary)]">
-                  {currentReciter.country} · {currentReciter.style}
+            {colorizeWords && (
+              <div className="mt-4">
+                <SettingsLabel>{t.settings.colorPalette}</SettingsLabel>
+                <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {COLOR_PALETTES.map((palette) => {
+                    const active = colorPaletteId === palette.id;
+                    return (
+                      <button
+                        key={palette.id}
+                        type="button"
+                        onClick={() => setColorPalette(palette.id)}
+                        className={`flex flex-col items-center gap-2 rounded-2xl border px-3 py-3 transition-all ${
+                          active
+                            ? "border-primary-500 bg-primary-50 shadow-sm"
+                            : "border-[var(--theme-border)] bg-[var(--theme-bg)] hover:border-[var(--theme-divider)]"
+                        }`}
+                      >
+                        <div className="flex gap-1">
+                          {palette.colors.slice(0, 5).map((color, i) => (
+                            <span key={i} className="h-4 w-4 rounded-full" style={{ backgroundColor: color }} />
+                          ))}
+                        </div>
+                        <span className={`text-[12px] font-medium ${active ? "text-primary-700" : "text-[var(--theme-text)]"}`}>
+                          {palette.name}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </>
+        );
+      case "script":
+        return (
+          <>
+            <h3 className="mb-3 text-[13px] font-semibold text-[var(--theme-text)]">{t.settings.textType}</h3>
+            <SegmentedControl
+              options={[
+                { value: "uthmani" as const, label: t.settings.textTypeUthmani },
+                { value: "simple" as const, label: t.settings.textTypeSimple },
+              ]}
+              value={textType}
+              onChange={setTextType}
+              stretch
+            />
+          </>
+        );
+      case "reciter":
+        return (
+          <>
+            <SettingsLabel label={t.settings.reciter} description={t.settings.reciterDesc} />
+            <button
+              type="button"
+              onClick={() => setReciterModalOpen(true)}
+              className="mt-3 flex w-full items-center gap-3 rounded-xl border border-[var(--theme-border)] bg-[var(--theme-bg)] px-4 py-3 text-left transition-colors hover:border-[var(--theme-divider)]"
+            >
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-600/10 text-[14px] font-semibold text-primary-700">
+                {currentReciter?.name.charAt(0) ?? "?"}
+              </div>
+              <div className="flex-1 min-w-0">
+                <span className="block truncate text-[14px] font-medium text-[var(--theme-text)]">
+                  {currentReciter?.name ?? "—"}
                 </span>
+                {currentReciter && (
+                  <span className="block text-[12px] text-[var(--theme-text-tertiary)]">
+                    {currentReciter.country} · {currentReciter.style}
+                  </span>
+                )}
+              </div>
+              <span className="shrink-0 text-[12px] font-medium text-primary-600">
+                {t.settings.changeReciter}
+              </span>
+            </button>
+          </>
+        );
+      case "theme":
+        return (
+          <>
+            <SettingsLabel>{t.theme.settings}</SettingsLabel>
+            <div className="mt-2 flex gap-3">
+              {THEME_OPTIONS.map((opt) => {
+                const active = theme === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    onClick={() => setTheme(opt.value)}
+                    className={`flex flex-1 flex-col items-center gap-2 rounded-2xl border px-3 py-3 transition-all ${
+                      active
+                        ? "border-primary-500 bg-primary-50 shadow-sm"
+                        : "border-[var(--theme-border)] bg-[var(--theme-bg)] hover:border-[var(--theme-divider)]"
+                    }`}
+                  >
+                    <span
+                      className={`flex h-8 w-8 items-center justify-center rounded-full border-2 ${
+                        active ? "border-primary-600" : "border-[var(--theme-divider)]"
+                      }`}
+                      style={{ backgroundColor: opt.color }}
+                    >
+                      {active && (
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke={opt.value === "dark" || opt.value === "dimmed" ? "#e5e5e5" : "#059669"} strokeWidth={2.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </span>
+                    <span className={`text-[12px] font-medium ${active ? "text-primary-700" : "text-[var(--theme-text)]"}`}>
+                      {themeLabels[opt.value]}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        );
+      case "readingMode":
+        return (
+          <>
+            <SegmentedControl options={READING_MODE_OPTIONS} value={readingModeTab} onChange={setReadingModeTab} stretch />
+            <div className="mt-5">
+              {readingModeTab === "normal" && (
+                <NormalTabContent
+                  fontFamily={currentFont.family}
+                  arabicFontSize={normalArabicFontSize}
+                  translationFontSize={normalTranslationFontSize}
+                  onArabicSizeChange={setNormalArabicFontSize}
+                  onTranslationSizeChange={setNormalTranslationFontSize}
+                  colorizeWords={colorizeWords}
+                  colors={activeColors}
+                  textType={textType}
+                />
+              )}
+              {readingModeTab === "wordByWord" && (
+                <WbwTabContent
+                  fontFamily={currentFont.family}
+                  arabicFontSize={wbwArabicFontSize}
+                  onArabicSizeChange={setWbwArabicFontSize}
+                  colorizeWords={colorizeWords}
+                  colors={activeColors}
+                  showWordTranslation={wbwShowWordTranslation}
+                  showWordTransliteration={wbwShowWordTransliteration}
+                  wordTranslationSize={wordTranslationSize}
+                  wordTransliterationSize={wordTransliterationSize}
+                  onShowWordTranslationChange={setWbwShowWordTranslation}
+                  onShowWordTransliterationChange={setWbwShowWordTransliteration}
+                  onWordTranslationSizeChange={setWordTranslationSize}
+                  onWordTransliterationSizeChange={setWordTransliterationSize}
+                  textType={textType}
+                />
+              )}
+              {readingModeTab === "mushaf" && (
+                <MushafTabContent
+                  fontFamily={currentFont.family}
+                  arabicFontSize={mushafArabicFontSize}
+                  onArabicSizeChange={setMushafArabicFontSize}
+                  colorizeWords={colorizeWords}
+                  colors={activeColors}
+                  textType={textType}
+                />
               )}
             </div>
-            <span className="shrink-0 text-[12px] font-medium text-primary-600">
-              {t.settings.changeReciter}
-            </span>
-          </button>
-        </SettingsAccordion>
-
-        {/* ═══ THEME ═══ */}
-        <SettingsAccordion
-          title={t.settings.sectionTheme}
-          summary={themeSummary}
-          icon={<IconPalette />}
-          isOpen={openSections.has("theme")}
-          onToggle={() => toggleSection("theme")}
-        >
-          <SettingsLabel>{t.theme.settings}</SettingsLabel>
-          <div className="mt-2 flex gap-3">
-            {THEME_OPTIONS.map((opt) => {
-              const active = theme === opt.value;
-              return (
-                <button
-                  key={opt.value}
-                  onClick={() => setTheme(opt.value)}
-                  className={`flex flex-1 flex-col items-center gap-2 rounded-2xl border px-3 py-3 transition-all ${
-                    active
-                      ? "border-primary-500 bg-primary-50 shadow-sm"
-                      : "border-[var(--theme-border)] bg-[var(--theme-bg)] hover:border-[var(--theme-divider)]"
-                  }`}
-                >
-                  <span
-                    className={`flex h-8 w-8 items-center justify-center rounded-full border-2 ${
-                      active ? "border-primary-600" : "border-[var(--theme-divider)]"
-                    }`}
-                    style={{ backgroundColor: opt.color }}
+          </>
+        );
+      case "langNav":
+        return (
+          <>
+            <div className="flex items-center justify-between">
+              <SettingsLabel label={t.settings.language} description={t.settings.languageDesc} />
+              <div className="flex items-center gap-1 rounded-lg bg-[var(--theme-input-bg)] p-0.5">
+                {(["tr", "en"] as const).map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => setLocale(l)}
+                    className={`rounded-md px-3 py-1 text-[12px] font-medium transition-all ${locale === l ? "bg-[var(--theme-bg-primary)] text-[var(--theme-text)] shadow-sm" : "text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-secondary)]"}`}
                   >
-                    {active && (
-                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke={opt.value === "dark" || opt.value === "dimmed" ? "#e5e5e5" : "#059669"} strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </span>
-                  <span className={`text-[12px] font-medium ${active ? "text-primary-700" : "text-[var(--theme-text)]"}`}>
-                    {themeLabels[opt.value]}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </SettingsAccordion>
-
-        {/* ═══ READING MODE ═══ */}
-        <SettingsAccordion
-          title={t.settings.sectionReadingMode}
-          summary={readingModeSummary}
-          icon={<IconBook />}
-          isOpen={openSections.has("readingMode")}
-          onToggle={() => toggleSection("readingMode")}
-        >
-          <SegmentedControl options={READING_MODE_OPTIONS} value={readingModeTab} onChange={setReadingModeTab} stretch />
-          <div className="mt-5">
-            {readingModeTab === "normal" && (
-              <NormalTabContent
-                fontFamily={currentFont.family}
-                arabicFontSize={normalArabicFontSize}
-                translationFontSize={normalTranslationFontSize}
-                onArabicSizeChange={setNormalArabicFontSize}
-                onTranslationSizeChange={setNormalTranslationFontSize}
-                colorizeWords={colorizeWords}
-                colors={activeColors}
-                textType={textType}
-              />
-            )}
-            {readingModeTab === "wordByWord" && (
-              <WbwTabContent
-                fontFamily={currentFont.family}
-                arabicFontSize={wbwArabicFontSize}
-                onArabicSizeChange={setWbwArabicFontSize}
-                colorizeWords={colorizeWords}
-                colors={activeColors}
-                showWordTranslation={wbwShowWordTranslation}
-                showWordTransliteration={wbwShowWordTransliteration}
-                wordTranslationSize={wordTranslationSize}
-                wordTransliterationSize={wordTransliterationSize}
-                onShowWordTranslationChange={setWbwShowWordTranslation}
-                onShowWordTransliterationChange={setWbwShowWordTransliteration}
-                onWordTranslationSizeChange={setWordTranslationSize}
-                onWordTransliterationSizeChange={setWordTransliterationSize}
-                textType={textType}
-              />
-            )}
-            {readingModeTab === "mushaf" && (
-              <MushafTabContent
-                fontFamily={currentFont.family}
-                arabicFontSize={mushafArabicFontSize}
-                onArabicSizeChange={setMushafArabicFontSize}
-                colorizeWords={colorizeWords}
-                colors={activeColors}
-                textType={textType}
-              />
-            )}
-          </div>
-        </SettingsAccordion>
-
-        {/* ═══ LANGUAGE & NAVIGATION ═══ */}
-        <SettingsAccordion
-          title={t.settings.sectionLangNav}
-          summary={langSummary}
-          icon={<IconGlobe />}
-          isOpen={openSections.has("langNav")}
-          onToggle={() => toggleSection("langNav")}
-        >
-          <div className="flex items-center justify-between">
-            <SettingsLabel label={t.settings.language} description={t.settings.languageDesc} />
-            <div className="flex items-center gap-1 rounded-lg bg-[var(--theme-input-bg)] p-0.5">
-              {(["tr", "en"] as const).map((l) => (
-                <button
-                  key={l}
-                  onClick={() => setLocale(l)}
-                  className={`rounded-md px-3 py-1 text-[12px] font-medium transition-all ${locale === l ? "bg-[var(--theme-bg-primary)] text-[var(--theme-text)] shadow-sm" : "text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-secondary)]"}`}
-                >
-                  {l === "tr" ? "Türkçe" : "English"}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="mt-5 border-t border-[var(--theme-border)] pt-5">
-            <SettingsLabel label={t.settings.tabBar} description={t.settings.tabBarDesc} />
-            <div className="mt-3 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-[13px] text-[var(--theme-text)]">{t.settings.showLearnTab}</span>
-                <ToggleSwitch checked={showLearnTab} onChange={setShowLearnTab} />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[13px] text-[var(--theme-text)]">{t.settings.showMemorizeTab}</span>
-                <ToggleSwitch checked={showMemorizeTab} onChange={setShowMemorizeTab} />
+                    {l === "tr" ? "Türkçe" : "English"}
+                  </button>
+                ))}
               </div>
             </div>
-          </div>
-        </SettingsAccordion>
-      </div>
+            <div className="mt-5 border-t border-[var(--theme-border)] pt-5">
+              <SettingsLabel label={t.settings.tabBar} description={t.settings.tabBarDesc} />
+              <div className="mt-3 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[13px] text-[var(--theme-text)]">{t.settings.showLearnTab}</span>
+                  <ToggleSwitch checked={showLearnTab} onChange={setShowLearnTab} />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[13px] text-[var(--theme-text)]">{t.settings.showMemorizeTab}</span>
+                  <ToggleSwitch checked={showMemorizeTab} onChange={setShowMemorizeTab} />
+                </div>
+              </div>
+            </div>
+          </>
+        );
+    }
+  }
 
-      {/* Show onboarding again */}
-      <div className="mt-4">
-        <button
-          onClick={() => {
-            usePreferencesStore.getState().setHasSeenOnboarding(false);
-            window.location.href = "/browse/surahs";
-          }}
-          className="w-full rounded-xl bg-[var(--theme-pill-bg)] px-4 py-3 text-[13px] font-medium text-[var(--theme-text-secondary)] transition-colors hover:bg-[var(--theme-hover-bg)]"
-        >
-          {t.onboarding.showAgain}
-        </button>
-      </div>
+  // ── Active section title for detail header ──
+  const activeSectionData = activeSection ? sections.find((s) => s.id === activeSection) : null;
+
+  return (
+    <div className="mx-auto max-w-3xl px-6 py-8">
+      {activeSection === null ? (
+        <>
+          {/* ═══ GRID VIEW ═══ */}
+          <h1 className="mb-1 text-2xl font-bold tracking-tight text-[var(--theme-text)]">
+            {t.settings.controlPanel}
+          </h1>
+          <p className="mb-6 text-sm text-[var(--theme-text-tertiary)]">
+            {t.settings.subtitle}
+          </p>
+
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {sections.map((s) => (
+              <ControlPanelCard
+                key={s.id}
+                title={s.title}
+                summary={s.summary}
+                icon={s.icon}
+                onClick={() => setActiveSection(s.id)}
+              />
+            ))}
+          </div>
+
+          {/* Show onboarding again */}
+          <div className="mt-6">
+            <button
+              onClick={() => {
+                usePreferencesStore.getState().setHasSeenOnboarding(false);
+                window.location.href = "/browse/surahs";
+              }}
+              className="w-full rounded-xl bg-[var(--theme-pill-bg)] px-4 py-3 text-[13px] font-medium text-[var(--theme-text-secondary)] transition-colors hover:bg-[var(--theme-hover-bg)]"
+            >
+              {t.onboarding.showAgain}
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* ═══ DETAIL VIEW ═══ */}
+          <div className="animate-page-enter">
+            <button
+              type="button"
+              onClick={() => setActiveSection(null)}
+              className="mb-6 flex items-center gap-2 text-[14px] font-medium text-primary-600 transition-colors hover:text-primary-700"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10 12L6 8l4-4" />
+              </svg>
+              {activeSectionData?.title}
+            </button>
+
+            <div className="rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-bg-primary)] p-5">
+              {renderSectionContent(activeSection)}
+            </div>
+          </div>
+        </>
+      )}
 
       <SaveStatusBar visible={showSaved} />
 

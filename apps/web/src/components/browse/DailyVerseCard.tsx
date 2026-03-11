@@ -1,7 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { verseByKeyQueryOptions } from "~/hooks/useVerses";
+import { chaptersQueryOptions } from "~/hooks/useChapters";
 import { useTranslatedVerses } from "~/hooks/useTranslatedVerses";
 import { useTranslation } from "~/hooks/useTranslation";
+import { getSurahName } from "~/lib/surah-name";
 
 const CURATED_VERSES = [
   "2:255","2:286","3:26","3:139","6:162","10:62","13:28","14:7","16:97",
@@ -18,13 +21,18 @@ function getDailyVerseKey(): string {
 }
 
 export function DailyVerseCard() {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const verseKey = getDailyVerseKey();
   const { data: rawVerse } = useQuery(verseByKeyQueryOptions(verseKey));
+  const { data: chapters } = useSuspenseQuery(chaptersQueryOptions());
   const translated = useTranslatedVerses(rawVerse ? [rawVerse] : []);
   const verse = translated[0] ?? rawVerse;
 
   if (!verse) return null;
+
+  const [surahId, verseNum] = verse.verse_key.split(":").map(Number);
+  const chapter = chapters.find((c) => c.id === surahId);
+  const surahName = chapter ? getSurahName(chapter.id, chapter.name_simple, locale) : "";
 
   const arabicText = verse.words
     ? verse.words.filter((w) => w.char_type_name === "word").map((w) => w.text_uthmani).join(" ")
@@ -32,8 +40,10 @@ export function DailyVerseCard() {
 
   const translationText = verse.translations?.[0]?.text?.replace(/<[^>]*>/g, "");
 
-  const handleShare = async () => {
-    const text = `${verse.verse_key}\n${arabicText}${translationText ? `\n\n${translationText}` : ""}`;
+  const handleShare = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const text = `${surahName} ${verse.verse_key}\n${arabicText}${translationText ? `\n\n${translationText}` : ""}`;
     if (navigator.share) {
       await navigator.share({ text });
     } else {
@@ -42,7 +52,11 @@ export function DailyVerseCard() {
   };
 
   return (
-    <div className="mb-5 overflow-hidden rounded-2xl bg-gradient-to-br from-primary-600 to-primary-800 p-5 text-white shadow-[var(--shadow-elevated)]">
+    <Link
+      to="/$surahId/$verseNum"
+      params={{ surahId: String(surahId), verseNum: String(verseNum) }}
+      className="mb-5 block overflow-hidden rounded-2xl bg-gradient-to-br from-primary-600 to-primary-800 p-5 text-white shadow-[var(--shadow-elevated)] transition-all active:scale-[0.98]"
+    >
       <div className="mb-2 flex items-center justify-between">
         <span className="text-[12px] font-semibold uppercase tracking-wider opacity-80">{t.browse.dailyVerse}</span>
         <button onClick={handleShare} className="flex items-center gap-1 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium backdrop-blur-sm transition-colors hover:bg-white/25">
@@ -54,7 +68,7 @@ export function DailyVerseCard() {
       {translationText && (
         <p className="mb-2 text-[13px] leading-relaxed text-white/80">{translationText}</p>
       )}
-      <span className="text-[11px] font-medium text-white/60">{verse.verse_key}</span>
-    </div>
+      <span className="text-[11px] font-medium text-white/60">{surahName} {verse.verse_key}</span>
+    </Link>
   );
 }
