@@ -23,9 +23,9 @@ export function MahfuzLogo({ className, size, branded = false }: MahfuzLogoProps
   const gradId = `mg${uid}`;
   const hlId = `mh${uid}`;
 
-  const sizeProps = size
-    ? { width: Math.round(size * ASPECT), height: size }
-    : {};
+  // Always set explicit width/height to prevent FOUC (SVG expanding before CSS loads)
+  const h = size ?? 40;
+  const sizeProps = { width: Math.round(h * ASPECT), height: h };
 
   const g1 = branded ? "#34d399" : "var(--logo-g1)";
   const g2 = branded ? "#10b981" : "var(--logo-g2)";
